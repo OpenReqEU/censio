@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:th="https://www.thymeleaf.org" >
+<div class="header"
+>
+    <!-- START MOBILE SIDEBAR TOGGLE -->
+    <a class="btn-link toggle-sidebar d-lg-none pg pg-menu" data-toggle="sidebar" href="#"></a>
+    <!-- END MOBILE SIDEBAR TOGGLE -->
+
+    <div class="d-flex align-items-center profile">
+        <!-- START User Info-->
+        <div class="pull-left p-r-10 fs-14 font-heading d-lg-block">
+            <a th:href="@{/inbox}" id="notification-center" class="fa fa-bell" style="font-size: larger; position: relative; margin-right: 10px">
+                <span class="badge badge-pill badge-primary" id="notificationbubble" style="position: absolute; top: -10px; right: -10px">0</span>
+            </a>
+            <span class="semi-bold" th:text="${#authentication.getPrincipal().getFirstName()}">Max</span> <span class="text-master"  th:text="${#authentication.getPrincipal().getLastName()}"> Mustermann</span>
+        </div>
+        <div class="dropdown pull-right d-lg-block">
+
+            <button aria-expanded="false" aria-haspopup="true" class="profile-dropdown-toggle"
+                    data-toggle="dropdown" type="button"><span class="thumbnail-wrapper d32 circular inline"><img
+                    alt="" data-src="/assets/img/profiles/avatar.jpg"
+                    data-src-retina="/assets/img/profiles/avatar.jpg" height="32"
+                    src="/assets/img/profiles/avatar.jpg" width="32"></span></button>
+            <div class="dropdown-menu dropdown-menu-right profile-dropdown" role="menu">
+                <a class="dropdown-item" th:href="@{/changeprofile}"><i class="pg-settings_small"></i> Settings</a>
+                <a class="clearfix bg-master-lighter dropdown-item"
+                                                        th:href="@{/logout}"><span class="pull-left">Logout</span> <span
+                    class="pull-right"><i class="pg-power"></i></span></a>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

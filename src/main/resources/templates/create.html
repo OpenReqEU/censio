@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:with="https://www.thymeleaf.org/extras/with"
+      layout:decorate="~{layouts/basiclayout}"
+      with:title="'Hello, template'">
+
+<th:block layout:fragment="content">
+    <div class="jumbotron" data-pages="parallax">
+        <div class=" container-fluid container-fixed-lg sm-p-l-0 sm-p-r-0">
+            <div class="inner">
+                <!-- START BREADCRUMB -->
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item" style="padding: 13px 20px;">Create</li>
+                </ol>
+
+                <!-- END BREADCRUMB -->
+            </div>
+        </div>
+    </div>
+
+    <!-- END JUMBOTRON -->
+    <!-- START CONTAINER FLUID -->
+    <form th:action="@{/apps/create}" enctype="multipart/form-data" th:object="${createApp}" method="post">
+        <div class="container-fluid container-fixed-lg">
+            <!-- START CONTAINER FLUID -->
+            <div class=" container-fluid   container-fixed-lg">
+                <div id="rootwizard" class="m-t-50">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs nav-tabs-linetriangle nav-tabs-separator nav-stack-sm" role="tablist" data-init-reponsive-tabs="dropdownfx">
+                        <li class="nav-item">
+                            <a class="active" data-toggle="tab" href="#tab1" data-target="#tab1" role="tab"><i class="fa fa-info-circle tab-icon"></i> <span>Basic</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="" data-toggle="tab" href="#tab2" data-target="#tab2" role="tab"><i class="fa fa-users tab-icon"></i> <span>Users</span></a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="" data-toggle="tab" href="#tab4" data-target="#tab4" role="tab"><i class="fa fa-check tab-icon"></i> <span>Summary</span></a>
+                        </li>
+                    </ul>
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div class="tab-pane padding-20 sm-no-padding active slide-left" id="tab1">
+                            <div class="row row-same-height">
+
+                                <div class="col-md-12">
+                                    <div class="padding-30 sm-padding-5">
+
+
+
+                                        <div class="form-group form-group-default ">
+                                            <label>Title</label>
+                                            <input type="text" th:field="*{title}" class="form-control">
+                                        </div>
+
+                                        <div class="form-group form-group-default  ">
+                                            <label>Description</label>
+                                            <textarea type="text" th:field="*{description}"  data-autoresize rows="2" class="form-control" ></textarea>
+                                        </div>
+
+                                        <div class="form-group form-group-default  " style="min-height: 10px">
+                                            <label>Requirement labeling</label>
+                                            <input type="text" class="form-control" th:field="*{tasklabeling}" placeholder="Default: Requirement">
+                                        </div>
+                                        
+                                        <div class="form-group form-group-default" style="position: relative">
+                                            <label>Image</label>
+                                            <input id="fileSelectInput" style="display: none;" class="btn btn-success btn-cons" type="file" name="file" />
+                                            <button class="btn btn-success btn-cons" type="button" onclick="$('#fileSelectInput').trigger('click');">Select</button>
+                                        </div>
+
+                                        <div class="form-group form-group-default" style="position: relative">
+                                            <label>Additional Attributes</label>
+                                            <input id="newtask" type="text" class="form-control" placeholder="Add additional task information" aria-label="taskinformation" aria-describedby="basic-addon2">
+                                            <div class="input-group-append"
+                                                 style="    position: absolute;right: 0px;top: 10px;">
+                                                <button class="btn btn-success btn-cons" type="button"
+                                                        onclick="addtaskinformation()">Add</button>
+                                            </div>
+                                        </div>
+
+
+                                        <div style="max-width: 200px" >
+
+                                            <div
+                                                    th:replace="fragments/userlistfragment :: tasklist">
+                                            </div>
+
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane slide-left padding-20 sm-no-padding" id="tab2">
+                            <div class="row row-same-height">
+                                <div class="col-md-5 b-r b-dashed b-grey ">
+                                    <div class="padding-30 sm-padding-5 sm-m-t-15 m-t-50">
+                                        <h2>Invite users to your project</h2>
+                                    </div>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="" style="margin-bottom: 75px">
+
+                                        <h3>Participants</h3>
+
+                                        <div class="input-group mb-3">
+                                            <input id="newUserName" type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-success btn-cons" type="button"
+                                                        onclick="addUser()">Add</button>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="card" >
+
+                                            <div
+                                                    th:replace="fragments/userlistfragment :: userlist">
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div><div class="tab-pane slide-left padding-20 sm-no-padding" id="tab4">
+                        <h1 th:text="${createApp.update}?'Censio project updated':'Thanks for creating a new Censio project!'">Thanks for creating a new Censio project!</h1>
+                        <h3>Press <i>Finish</i> to finalize the creation process</h3>
+                    </div>
+
+                        <div class="padding-20 sm-padding-5 sm-m-b-20 sm-m-t-20 bg-white clearfix">
+                            <ul class="pager wizard no-style">
+                                <li class="next">
+                                    <button class="btn btn-primary btn-cons btn-animated from-left fa fa-users  pull-right" type="button">
+                                        <span>Next</span>
+                                    </button>
+                                </li>
+                                <li class="next finish hidden">
+                                    <button class="btn btn-primary btn-cons btn-animated from-left  pull-right" type="submit">
+                                        <span>Finish</span>
+                                    </button>
+                                </li>
+                                <li class="previous first hidden">
+                                    <button class="btn btn-default btn-cons btn-animated from-left pull-right" type="button">
+                                        <span>First</span>
+                                    </button>
+                                </li>
+                                <li class="previous">
+                                    <button class="btn btn-default btn-cons pull-right" type="button">
+                                        <span>Previous</span>
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- END CONTAINER FLUID -->
+        </div>
+    </form>
+    
+</th:block>
+</html>

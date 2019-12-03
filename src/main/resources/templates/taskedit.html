@@ -1,0 +1,118 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:with="https://www.thymeleaf.org/extras/with"
+      layout:decorate="~{layouts/basiclayout}"
+      with:title="'Hello, template'">
+
+
+<!--/*@thymesVar id="app" type="com.selectionarts.projectcensio.apicontroller.viewmodel.AppViewModel"*/-->
+<!--/*@thymesVar id="task" type="com.selectionarts.projectcensio.apicontroller.viewmodel.TaskViewModel"*/-->
+<th:block layout:fragment="content">
+    <div th:insert="fragments/breadcrumb :: breadcrumb(~{ :: .breadcrumb})">
+        <ol class="breadcrumb">
+                            <li class="breadcrumb-item" sec:authorize="hasAuthority('USER')" style="padding: 13px 10px 13px 20px ;" th:text="${app.getTitle()}">
+                        Participation
+                    </li>
+                    <li class="breadcrumb-item" sec:authorize="hasAuthority('USER')" style="padding: 13px 0px;" >
+                        <a th:href="@{/apps/{id} (id=${app.id})}" th:text="${app.getTasklabeling().isEmpty()}? 'Requirement':${app.getTasklabeling()}"></a>
+
+                    </li>
+            <li class="breadcrumb-item" th:if="${task.getTitle() != null && !task.getTitle().isEmpty()}" style="padding: 13px 20px;" th:text="${app.getTasklabeling().isEmpty()}? 'Update Requirement':('Update '+${app.getTasklabeling()})"></li>
+            <li class="breadcrumb-item" th:unless="${task.getTitle() != null && !task.getTitle().isEmpty()}" style="padding: 13px 20px;" th:text="${app.getTasklabeling().isEmpty()}? 'Create Requirement':('Create '+${app.getTasklabeling()})"></li>
+            
+            
+            <li class="breadcrumb-item active" th:if="${task.getTitle() != null && !task.getTitle().isEmpty()}" sec:authorize="hasAuthority('USER')"  style="padding: 13px 0px 13px 0px ;" th:text="${task.getTitle()}">
+
+                    </li>
+        </ol>
+    </div>
+
+    <!-- ####################
+             BEGIN CONTENT
+         #################### -->
+
+    <!-- END JUMBOTRON -->
+    <!-- START CONTAINER FLUID -->
+    <form id="taskForm" th:action="${path}" th:object="${task}" method="post">
+        <div class="container-fluid container-fixed-lg">
+            <div class="padding-15">
+
+                <div style="display: block" data-pages="card" class="card card-default">
+                    <div class=" " style="padding: 10px">
+                            <div class="form-group form-group-default required ">
+                                <label th:text="${app.getTasklabeling().isEmpty()}? 'Requirement':${app.getTasklabeling()}"></label>
+                                <input type="text" th:field="*{title}" class="form-control">
+                            </div>
+
+                            <div class="form-group form-group-default  " style="min-height: 100px">
+                                <label>Description</label>
+                                <textarea type="text" th:field="*{description}" data-autoresize rows="4" style="height: 100%; width: 100%"
+                                          class="form-control"></textarea>
+                            </div>
+
+                            <th:block th:if="${app.getTaskAdditionalTypes()} ">
+                                        <div>
+                                            <div style="max-width: 250px;" th:each="text, stat : ${attributes}">
+                                                <div class="form-group form-group-default" >
+                                                    <label th:text="${text.getTitle()}"></label>
+
+                                                    <input th:type="${text.getType().equals('Text')}? 'text' : 'date'"
+                                                              th:field="${task.taskAdditionalTypes[__${stat.index}__]}"
+                                                              class="form-control" th:placeholder="${text.getType()}"></input>
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                    </th:block>
+
+                                    <!--<th:block
+                                            th:if="${examDto.isWithextrafields() and !examDto.isUserAllowed() and !scoreExamDto.getExtrainformation().isEmpty()} ">
+                                        <h3 th:text="#{participationLA.userextrainformations}"
+                                            style="text-align: left; margin-top: 0"></h3>
+                                        <div style="text-align: left">
+                                            <p style="display: inline-block">[[#{scoreExam.userinfo}]]:&nbsp;</p>
+                                            <p style="display: inline-block"
+                                               th:each="text, stat : ${scoreExamDto.getExtrainformation()}"
+                                               th:text="${text} + (${stat.index >= stat.size-1}? '':', ')"></p>
+
+                                        </div>
+
+                                    </th:block>-->
+
+
+
+                            <!--   <div class="services">
+                                        <a th:href="@{/dependencyDetection/{id} (id=${appId})}">Dependency-detection</a>
+                                        <a href="#">Similarity-detection</a>
+                                        <a href="#">Cross-reference-detection</a>
+                                        <a href="#">Requirement-Quality</a>
+                                    </div>  -->
+
+                            <div class="form-buttons-group">
+
+                                <button type="button" class="btn btn-light" onclick="javascript:history.go(-1)">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Add</button>
+
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <!-- END CONTAINER FLUID -->
+    
+    <!-- BEGIN TAB AREA-->
+    <div class="container-fluid container-fixed-lg padding-15" th:insert="fragments/servicefragment :: servicebasicfunctionality(~{},~{})">
+
+    </div>
+    <!-- END TAB AREA -->
+
+
+    <!-- ####################
+           END CONTENT
+      #################### -->
+      
+</th:block>
+
+</html>

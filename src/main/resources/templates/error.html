@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:with="https://www.thymeleaf.org/extras/with"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layouts/basiclayout}"
+      with:title="'Hello, template'">
+
+<th:block layout:fragment="content">
+
+
+    <div class="jumbotron" data-pages="parallax">
+        <div class=" container-fluid container-fixed-lg sm-p-l-0 sm-p-r-0">
+            <div class="inner">
+                <!-- START BREADCRUMB -->
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item" style="padding: 13px 20px;">ERROR</li>
+                </ol>
+                <!-- END BREADCRUMB -->
+            </div>
+        </div>
+    </div>
+    
+    
+<div class="container-fluid container-fixed-lg justify-content-center ">
+<div class="col-xs-1" align="center">
+       <h1 class="error-number" th:text="${statusCode}">100</h1>
+        <h2 class="semi-bold">Sorry but an error occured</h2>
+        <h4 class="semi-bold" th:text="${errorText}">Sorry but an error occured</h4>
+     </div>
+          </div>
+</th:block>
+</html>

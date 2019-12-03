@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout">
+<th:block layout:insert="~{fragments/header}"/>
+<body class="fixed-header">
+<th:block layout:replace="~{fragments/menu}"/>
+<div class="page-container">
+
+    <th:block layout:replace="~{fragments/profileheader}"/>
+
+
+    <div class="page-content-wrapper">
+        <div class="content">
+            <th:block layout:fragment="content"/>
+        </div>
+
+        <th:block layout:insert="~{fragments/footer}"/>
+    </div>
+
+
+</div>
+
+<th:block layout:replace="~{fragments/body_scripts}"/>
+</body>
+</html>

@@ -1,0 +1,339 @@
+<div class="" xmlns:th="http://www.thymeleaf.org"
+     th:fragment="servicebasicfunctionality(links, service)">
+
+    <script src="/webjars/jquery/jquery.min.js"></script>
+<script th:inline="javascript">
+
+    function callRestApi(url, btn, objToReplace, loadingElement) {
+
+        if ([[${appId}]] != null &&
+            [[${appId}]] != '') {
+            url = url.replace("appId", [[${appId}]]);
+        }
+
+        if ([[${task}]] != null &&
+            [[${task.id}]] != null &&
+            [[${task.id}]] != '') {
+            url = url.replace("taskId", [[${task.id}]]);
+        }
+        
+        if ([[${task}]] == null ||
+        	[[${task.id}]] == null ||
+            [[${task.id}]] == '') {
+            url = url.replace("taskId", "0");
+        }
+        
+        btn.attr("disabled", true);
+        loadingElement.show();
+        
+        $.ajax({
+            url: url,
+            type: 'get',
+            data: $("#taskForm").serialize(),
+            success: function (response) {
+                if (btn[0].id != 'getSimilarityBtn') {
+                    objToReplace.replaceWith(response);
+                    loadingElement.hide();
+                    btn.attr("disabled", false);
+                }
+            },
+        	error: function(jqXHR, textStatus, errorThrown) {
+        		if (btn[0].id != 'getSimilarityBtn') {
+                    objToReplace.replaceWith("<br><div class=\"center\">Service temporarily unavailable<br>please try again later</div>");
+                    loadingElement.hide();
+                    btn.attr("disabled", false);
+                }
+        	}
+        });
+    }
+
+    function similarityWSconnect() {
+
+        var socket = new SockJS('/gs-guide-websocket');
+        var stompClient = Stomp.over(socket);
+        var sessionId = "";
+
+        stompClient.connect({}, function (frame) {
+            stompClient.subscribe('/user/test1', function (output) {
+                $("#similarityResult").html(output.body);
+                $('#ajax-loading-sim').hide();
+                $('#getSimilarityBtn').attr("disabled", false);
+
+				if ($('#title').length > 0) {
+					$('.taskTitle').html( $('#title')[0].value);
+                }
+            });
+        });
+    }
+
+    $(function () {
+    	similarityWSconnect();
+    });
+</script>
+
+    <div id="rootwizard" class="m-t-20">
+        <!-- Nav tabs -->
+
+
+        <ul class="nav nav-tabs nav-tabs-linetriangle nav-tabs-separator nav-stack-sm" role="tablist"
+            data-init-reponsive-tabs="dropdownfx">
+
+            <th:block th:replace="${links}"/>
+
+            <li class="nav-item" >
+                <a class="active" data-toggle="tab" href="#tab2" data-target="#tab2" role="tab" onclick="callRestApi('/dependencyDetection/appId/taskId', $('#getDependenciesBtn'), $('#resultsBlock'), $('#ajax-loading'))"><i
+                        class="fa fa-share tab-icon"></i> <span>Dependency-detection</span></a>
+            </li>
+
+
+            <li class="nav-item">
+                <a class="" data-toggle="tab" href="#tab3" data-target="#tab3" role="tab" onclick="callRestApi('/similarityDetection/appId/taskId', $('#getSimilarityBtn'), $('#similarityResult'), $('#ajax-loading-sim'))" ><i
+                        class="fa fa-copy tab-icon"></i> <span>Similarity-detection</span></a>
+            </li>
+
+
+
+            <li class="nav-item">
+                <a class="" data-toggle="tab" href="#tab4" data-target="#tab4" role="tab" onclick="callRestApi('/crossReferenceDetection/appId/taskId', $('#getCrossRefBtn'), $('#crossRefResult'), $('#ajax-loading-cross'))"><i
+                        class="fa fa-random tab-icon"></i> <span>Cross-reference-detection</span></a>
+            </li>
+
+
+            <li class="nav-item">
+                <a class="" data-toggle="tab" href="#tab5" data-target="#tab5" role="tab" onclick="callRestApi('/prsImprovingReqQual/appId/taskId', $('#getImprovedReqQualBtn'), $('#improvedReqQualResult'), $('#ajax-loading-prsImproveReqQual'))"><i
+                        class="fa fa-check-circle-o tab-icon"></i> <span>Requirement-Quality</span></a>
+            </li>
+
+
+        </ul>
+        <!-- Tab panes -->
+        <div class="tab-content">
+
+
+            <th:block th:replace="${service}"/>
+
+            <div class="service tab-pane padding-15 sm-no-padding slide-left"
+                 id="tab2">
+
+                <script>
+                    if($('#tab1').length == 0)
+                    {
+                        $('#tab2').addClass('active')
+                    }
+                </script>
+
+                <div class="row row-same-height">
+
+                    <div class="col-md-12">
+                        <div class="padding-30 sm-padding-5">
+                            <div class="center">
+                                <div id="ajax-loading" class="ajax-loading" style="display:none;"><h1
+                                        data-text="loading ...">loading ...</h1></div>
+                                <button id="getDependenciesBtn" type="button" class="btn btn-light"
+                                        onclick="callRestApi('/dependencyDetection/appId/taskId',
+                            $('#getDependenciesBtn'),  $('#resultsBlock'), $('#ajax-loading'))">
+                                    reload
+                                </button>
+                            </div>
+
+                            <div id="resultsBlock"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="service tab-pane slide-left padding-20 sm-no-padding" id="tab3" >
+                <div class="row row-same-height">
+
+                    <div class="col-md-12">
+                        <div class="padding-30 sm-padding-5">
+
+                            <div class="center">
+                                <div id="ajax-loading-sim" class="ajax-loading" style="display:none;"><h1
+                                        data-text="loading ...">loading ...</h1></div>
+                                <button id="getSimilarityBtn" type="button" class="btn btn-light"
+                                        onclick="callRestApi('/similarityDetection/appId/taskId',
+                                        $('#getSimilarityBtn'), $('#similarityResult'), $('#ajax-loading-sim'))">
+                                    reload
+                                </button>
+                            </div>
+
+                            <div id="similarityResult"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="tab-pane slide-left padding-20 sm-no-padding" id="tab4">
+                <div class="row row-same-height">
+
+                    <div class="col-md-12">
+                        <div class="padding-30 sm-padding-5">
+
+                            <div class="center">
+                                <div id="ajax-loading-cross" class="ajax-loading" style="display:none;"><h1
+                                        data-text="loading ...">loading ...</h1></div>
+                                <button id="getCrossRefBtn" type="button" class="btn btn-light"
+                                        onclick="callRestApi('/crossReferenceDetection/appId/taskId',
+                                        $('#getCrossRefBtn'),
+                                        $('#crossRefResult'),
+                                        $('#ajax-loading-cross'))">
+                                    reload
+                                </button>
+                            </div>
+
+                            <div id="crossRefResult"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="tab-pane slide-left padding-20 sm-no-padding" id="tab5">
+                <div class="row row-same-height">
+                    <div class="col-md-12">
+                        <div class="padding-30 sm-padding-5">
+
+                            <div class="center">
+                                <div id="ajax-loading-prsImproveReqQual" class="ajax-loading"
+                                     style="display:none;"><h1 data-text="loading ...">loading ...</h1></div>
+                                <button id="getImprovedReqQualBtn" type="button" class="btn btn-light"
+                                        onclick="callRestApi('/prsImprovingReqQual/appId/taskId',
+                                        $('#getImprovedReqQualBtn'),
+                                        $('#improvedReqQualResult'),
+                                        $('#ajax-loading-prsImproveReqQual'))">
+                                    reload
+                                </button>
+                            </div>
+
+                            <div id="improvedReqQualResult"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-----------------------------------------------Comments------------------------------------------------->
+
+
+<li class="nav-item"  th:fragment="commentstablink">
+    <a  data-toggle="tab" href="#tab1" data-target="#tab1" role="tab"><i
+            class="fa fa-comment tab-icon"></i> <span>Comments</span></a>
+</li>
+
+
+<div class="service tab-pane padding-15 sm-no-padding  slide-left" id="tab1"
+     th:fragment="comments" xmlns:th="http://www.thymeleaf.org">
+    <div class="row row-same-height">
+
+        <div class="col-md-12">
+            <div class="padding-30 sm-padding-5">
+                <div class="feed">
+
+                    <!--/*@thymesVar id="taskcomment" type="com.selectionarts.projectcensio.apicontroller.viewmodel.TaskCommentViewModel"*/-->
+                    <div data-pages="card" class="card card-default">
+                        <div class=" " style="padding: 10px">
+                            <form th:action="@{/apps/{id}/tasks/{taskid}/comment (id=${app.id},
+                            taskid=${task.id})}" th:object="${taskcomment}" role="form" method="post">
+
+                                <div class="form-group form-group-default">
+                                    <label>Description</label>
+                                    <textarea type="text"  data-autoresize rows="2" style="height: 100%; width: 100%; min-height: 50px"
+                                              th:field="${taskcomment.comment}" class="form-control"></textarea>
+                                </div>
+
+
+                                <div class="radio radio-success">
+
+                                    <input type="radio" th:field="*{type}"
+                                           id="neurtral"
+                                           th:value="${T(com.selectionarts.projectcensio.model.enumeration.CommentType).NEUTRAL}"
+                                    /> <label for="neurtral">Neutral</label>
+
+                                    <input type="radio" th:field="*{type}"
+                                           id="pro"
+                                           th:value="${T(com.selectionarts.projectcensio.model.enumeration.CommentType).PRO}"
+                                    /> <label for="pro">PRO</label>
+
+                                    <input type="radio" th:field="*{type}"
+                                           id="con"
+                                           th:value="${T(com.selectionarts.projectcensio.model.enumeration.CommentType).CON}"
+                                    /> <label for="con">CON</label>
+
+                                </div>
+                                <div class="form-buttons-group">
+
+                                    <button type="submit" class="btn btn-primary">Post</button>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!--/*@thymesVar id="task" type="com.selectionarts.projectcensio.apicontroller.viewmodel.TaskViewModel"*/-->
+                    <th:block th:each="comment, indexstat : ${task.getCommentViewModels()}">
+                    <div class="card social-card share  col12" data-social="item" >
+                        <div class="card-header ">
+
+                            <th:block th:switch="${comment.getType()}">
+                                <h5 th:case="${T(com.selectionarts.projectcensio.model.enumeration.CommentType).NEUTRAL}"
+                                    class="pull-left fs-12"
+                                    th:classappend="'neutral-comments'">Neutral<i
+                                        class="fa fa-circle fs-11"></i></h5>
+
+                                <h5 th:case="${T(com.selectionarts.projectcensio.model.enumeration.CommentType).PRO}"
+                                    class="pull-left fs-12"
+                                    th:classappend="'pro-comments'">Pro<i
+                                        class="fa fa-circle  fs-11"></i></h5>
+
+                                <h5 th:case="${T(com.selectionarts.projectcensio.model.enumeration.CommentType).CON}"
+                                    class="pull-left fs-12"
+                                    th:classappend="'con-comments'">Con<i
+                                        class="fa fa-circle fs-11"></i></h5>
+                            </th:block>
+
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="card-description">
+                            <h3 th:text="${comment.getComment()}" style="white-space: pre-wrap">Comment.comment</h3>
+                        </div>
+                        <div class="card-footer clearfix">
+                            <div class="pull-left">via <span class="text-complete"
+                                                             th:text="${comment.getUserauthor()}">Comment.User</span>
+                            </div>
+                            <div class="pull-right hint-text"  th:text="${#dates.format(comment.getDate(), 'dd-MM-yyyy HH:mm')}">
+                                Comment.date
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                    </th:block>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-----------------------------------------------Dependency Detection------------------------------------------------->
+
+
+<!-----------------------------------------------Similarity-detection------------------------------------------------->
+
+<!-------------------------------------------Cross-reference-detection------------------------------------------------->
+
+
+
+<!-------------------------------------------Prs improving Req Quality------------------------------------------------->
+
+

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:with="https://www.thymeleaf.org/extras/with"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layouts/basiclayout}"
+      with:title="'Hello, template'">
+
+<th:block layout:fragment="content">
+    <!-- START JUMBOTRON -->
+
+
+    <!--<div sec:authorize="hasRole('USER')">Text visible to user.</div>
+    <div sec:authorize="hasAuthority('ADMIN')">Text visible to admin.</div>
+    <div sec:authorize="isAuthenticated()">Text visible only to</div>
+    <div sec:authentication="principal.authorities"></div>
+    <div sec:authentication="name">HIER name</div>-->
+
+
+    <div class="jumbotron" data-pages="parallax">
+        <div class=" container-fluid container-fixed-lg sm-p-l-0 sm-p-r-0">
+            <div class="inner">
+                <!-- START BREADCRUMB -->
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item" style="padding: 13px 20px;">Inbox</li>
+                </ol>
+                <!-- END BREADCRUMB -->
+            </div>
+        </div>
+    </div>
+
+    <!-- END JUMBOTRON -->
+    <div class="container-fluid container-fixed-lg">
+        <!-- START PAGE CONTENT -->
+        <!-- START APP -->
+        <!-- START SECONDARY SIDEBAR MENU-->
+
+        <!--/*@thymesVar id="notification" type="com.selectionarts.projectcensio.apicontroller.viewmodel.NotificationViewModel"*/-->
+        <!-- START PAGE CONTENT WRAPPER -->
+        <div class="page-content-wrapper full-height">
+            <!-- START PAGE CONTENT -->
+            <div style="min-height: 100%;">
+                <!-- START APP -->
+                <!-- END SECONDARY SIDEBAR MENU -->
+                <div class="inner-content full-height" style="height: 1000px !important; margin-left: 0;">
+                    <div class="split-view">
+                        <!-- START SPLIT LIST VIEW -->
+                        <div class="split-list">
+                            <a class="list-refresh" href="#"><i class="fa fa-refresh"></i></a>
+                            <div data-email="list" class=" boreded no-top-border">
+                                <!-- START EMAIL LIST SORTED BY DATE -->
+                                <!-- END EMAIL LIST SORTED BY DATE -->
+                            </div>
+                        </div>
+                        <!-- END SPLIT LIST VIEW -->
+                        <!-- START SPLIT DETAILS -->
+                        <div data-email="opened" class="split-details">
+                            <div class="no-result">
+                                <h1>No email has been selected</h1>
+                            </div>
+                            <div class="email-content-wrapper" style="display:none">
+                                <div class="actions-wrapper menuclipper bg-master-lightest"
+                                     style="background-color: #ffffff">
+                                    <ul class="actions menuclipper-menu no-margin p-l-20 ">
+                                        <li class="d-lg-none d-xl-none sm-no-padding">
+                                            <a href="#" class="split-list-toggle"><i class="fa fa-angle-left"></i> All
+                                                Inboxes</a>
+                                        </li>
+                                    </ul>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="email-content">
+                                    <div class="email-content-header">
+                                        <div class="sender inline">
+                                            <p class="name no-margin bold">
+                                            </p>
+                                            <p class="datetime no-margin"></p>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class="subject m-t-20 m-b-20 semi-bold">
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="email-content-body m-t-20">
+
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+
+
+                                                <div class="widget-12 card no-border bg-primary  widget-loader-bar">
+                                                    <div class="full-height d-flex flex-column">
+                                                        <div class="card-header ">
+                                                            <div class="card-title text-black">
+
+                                                        <span class="font-montserrat fs-11 all-caps">Votes completed (<span id="completedvotes"></span>)
+                                                            <i class="fa fa-chevron-right"></i>
+                                                        </span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="p-l-20">
+
+                                                            <a href="#previewvotes" class="btn-circle-arrow text-white"
+                                                               data-toggle="collapse">
+                                                                <i class="pg-arrow_minimize"></i>
+                                                            </a>
+                                                            <span class="small hint-text text-white">Open Votes for Tasks</span>
+                                                            <div id="previewvotes" class="previewvotes collapse show">
+                                                                <ul style="color: #ffffff">
+                                                                    <li>Task 1</li>
+                                                                    <li>Task 2</li>
+                                                                    <li>Task 3</li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        <div class="mt-auto">
+                                                            <div class="progress progress-small m-b-20">
+
+                                                                <div class="progress-bar progress-bar-white " id="progressvotes"
+                                                                     style="width:45%"></div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-md-6">
+                                                <div class="widget-12 card no-border bg-success widget-loader-bar">
+                                                    <div class="full-height d-flex flex-column">
+                                                        <div class="card-header ">
+                                                            <div class="card-title text-black">
+
+                                                        <span class="font-montserrat fs-11 all-caps">Comments completed (<span id="completedcomments"></span>)
+                                                            <i class="fa fa-chevron-right"></i>
+                                                        </span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="p-l-20">
+
+                                                            <a href="#previewcomments" class="btn-circle-arrow text-white"
+                                                               data-toggle="collapse">
+                                                                <i class="pg-arrow_minimize"></i>
+                                                            </a>
+                                                            <span class="small hint-text text-white">Open Comments for Tasks</span>
+                                                            <div id="previewcomments" class=" previewcomments collapse show">
+                                                                <ul style="color: #ffffff">
+                                                                    <li>Task 1</li>
+                                                                    <li>Task 2</li>
+                                                                    <li>Task 3</li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        <div class="mt-auto">
+                                                            <div class="progress progress-small m-b-20">
+
+                                                                <div class="progress-bar progress-bar-white" id="progresscomments"
+                                                                     style="width:45%"></div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="notification-text-body" ></div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END SPLIT DETAILS -->
+                        <!-- START COMPOSE BUTTON FOR TABS -->
+                        <div class="compose-wrapper d-md-none">
+                            <a class="compose-email text-info pull-right m-r-10 m-t-10" href="email_compose.html"><i
+                                    class="fa fa-pencil-square-o"></i></a>
+                        </div>
+                        <!-- END COMPOSE BUTTON -->
+                    </div>
+                </div>
+                <!-- END APP -->
+            </div>
+            <!-- END PAGE CONTENT -->
+        </div>
+
+        <!-- END PAGE CONTENT -->
+    </div>
+    <!-- START CONTAINER FLUID -->
+    <!--<div class="container-fluid container-fixed-lg">
+        <!-- BEGIN PlACE PAGE CONTENT HERE -->
+    <!-- START APP -->
+    <!-- START SECONDARY SIDEBAR MENU-->
+
+    <!-- END SECONDARY SIDEBAR MENU -->
+
+    <!--</div>-->
+
+    <!-- END CONTAINER FLUID -->
+
+</th:block>
+</html>

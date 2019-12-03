@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+    <head>
+
+    </head>
+
+    <body class="fixed-header">
+    	<!-- START JUMBOTRON -->
+        <div class="jumbotron" data-pages="parallax" th:fragment="breadcrumb(breadcrumbname)">
+            <div class=" container-fluid container-fixed-lg sm-p-l-0 sm-p-r-0">
+                <div class="inner">
+                    <!-- START BREADCRUMB -->
+                    <ol class="breadcrumb" th:replace="${breadcrumbname}">
+                        <li class="breadcrumb-item" style="padding: 13px 20px;">...</li>
+                    </ol>
+                    <!-- END BREADCRUMB -->
+                </div>
+            </div>
+        </div>
+        <!-- END JUMBOTRON -->
+    </body>
+</html>

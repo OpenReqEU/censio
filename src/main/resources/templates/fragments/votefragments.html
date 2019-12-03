@@ -1,0 +1,28 @@
+<div id="votedetails" th:fragment="votedetails" xmlns:th="http://www.thymeleaf.org" >
+    <div style="display: inline-block; padding: 5px;">
+
+        <span class="fa fa-thumbs-up"></span>
+        <span th:text="${task.nrupvotes}">0</span>
+    </div>
+    <div style="display: inline-block; padding: 5px;">
+
+        <span class="fa fa-thumbs-down"></span>
+        <span th:text="${task.nrdownvotes}">0</span>
+    </div>
+    <div style="display: inline-block; padding: 5px;">
+
+        <span class="fa fa-users"></span>
+        <span th:text="${task.nrvotes}">0</span>
+    </div>
+
+    <div style="display: inline-block; padding: 5px;">
+
+        <span class="fa fa-comment"></span>
+        <span th:text="${task.nrcomments}">0</span>
+    </div>
+
+    <div class="progress">
+        <div class="progress-bar bg-success" role="progressbar" th:style="'width:'+${task.currentbalanceupvotes}+'%'"></div>
+        <div class="progress-bar bg-danger" role="progressbar" th:style="'width:'+${task.currentbalancedownvotes}+'%'"></div>
+    </div>
+</div>

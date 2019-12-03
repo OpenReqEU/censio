@@ -1,0 +1,53 @@
+<div id="userlist" th:fragment="userlist" xmlns:th="http://www.thymeleaf.org" >
+    <ul class="list-group list-group-flush">
+
+        <th:block th:each="user, itemStat : ${createApp.userViewModelSet}">
+            <li class="list-group-item"><h6
+                    th:field=" ${createApp.userViewModelSet[__${itemStat.index}__].email}" th:text="${user.email}">user.email</h6>
+                <div class="dropdown" style="
+                                                                                 position: absolute;
+                                                                                 width: 50px;
+
+                                                                                 top: 10px;
+                                                                                 right: 0;">
+                    <a id="card-settings" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false">
+                        <i class="card-icon card-icon-settings "></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="card-settings" >
+                        <a   th:href="'javascript:void(0)'" th:onclick="'removeUser(\''+${user.email}+'\')'" class="dropdown-item">Remove User</a>
+                        <a  th:if="${!user.newuser or createApp.update}" th:href="'javascript:void(0)'" th:onclick="'resendEmail(\''+${user.email}+'\')'" class="dropdown-item">Resend Invitation</a>
+                    </div>
+                </div></li>
+        </th:block>
+    </ul>
+</div>
+
+<div class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="card-settings">
+
+</div>
+
+
+<!--/*@thymesVar id="createApp" type="com.selectionarts.projectcensio.apicontroller.viewmodel.AppViewModel"*/-->
+<div id="tasklist" th:fragment="tasklist" xmlns:th="http://www.thymeleaf.org" >
+    <ul class="">
+
+        <th:block th:each="task, itemStat : ${createApp.taskAdditionalTypes}">
+            <li class="">
+                <div class="form-group form-group-default  " style="min-height: 10px">
+                    <label th:text="${createApp.taskAdditionalTypes[__${itemStat.index}__].getTitle()}">Task labeling</label>
+                    <!--<input type="text" class="form-control" th:field="${task.type}" placeholder="Default: Requirement">-->
+                    <select name="types" class="cs-select cs-skin-slide" data-init-plugin="cs-select"
+                            th:field="${createApp.taskAdditionalTypes[__${itemStat.index}__].type}">
+                        <option th:value="'Text'"
+                                th:text="'Text'">Default
+                        </option>
+                        <option th:value="'Date'"
+                                th:text="'Date'">UserDefined
+                        </option>
+                    </select>
+                </div>
+
+                </li>
+        </th:block>
+    </ul>
+</div>

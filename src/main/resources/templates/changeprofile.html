@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:with="https://www.thymeleaf.org/extras/with"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layouts/basiclayout}"
+      with:title="'Hello, template'">
+
+<th:block layout:fragment="content">
+    <!-- START JUMBOTRON -->
+
+
+    <!--<div sec:authorize="hasRole('USER')">Text visible to user.</div>
+    <div sec:authorize="hasAuthority('ADMIN')">Text visible to admin.</div>
+    <div sec:authorize="isAuthenticated()">Text visible only to</div>
+    <div sec:authentication="principal.authorities"></div>
+    <div sec:authentication="name">HIER name</div>-->
+
+
+
+    <div class="jumbotron" data-pages="parallax">
+        <div class=" container-fluid container-fixed-lg sm-p-l-0 sm-p-r-0">
+            <div class="inner">
+                <!-- START BREADCRUMB -->
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item" style="padding: 13px 20px;">Profile</li>
+                </ol>
+
+                <!-- END BREADCRUMB -->
+            </div>
+        </div>
+    </div>
+
+    <!-- END JUMBOTRON -->
+    <!-- START CONTAINER FLUID -->
+    <div class="container-fluid container-fixed-lg">
+        <!-- BEGIN PlACE PAGE CONTENT HERE -->
+        <!--/*@thymesVar id="userViewModel" type="com.selectionarts.projectcensio.apicontroller.viewmodel.UserViewModel"*/-->
+        <div>
+            <form id="form-register" th:object="${userViewModel}" class="p-t-15" role="form"
+                  th:action="@{/changeprofile}" method="post">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                            <label>First Name</label>
+                            <input type="text" th:field="${userViewModel.firstName}" placeholder="John" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                            <label>Last Names</label>
+                            <input type="text" name="lname" th:field="${userViewModel.lastName}" placeholder="Smith" class="form-control" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group form-group-default">
+                            <label>User name</label>
+                            <input type="text" th:field="${userViewModel.email}" disabled placeholder="John.Smith@gmail.com" class="form-control" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="alert alert-danger"
+                             th:if="${#fields.hasErrors('oldpassword')} or ${#fields.hasErrors('newpassword')}">
+                            <span th:errors="*{oldpassword}"></span>
+                        </div>
+
+                        <div class="form-group form-group-default">
+                            <label>Old Password</label>
+                            <input type="password"  th:field="${userViewModel.oldpassword}" placeholder="Minimum of 4 Charactors" class="form-control" required>
+                        </div>
+
+
+                        <div class="form-group form-group-default">
+                            <label>New Password</label>
+                            <input type="password"  th:field="${userViewModel.newpassword}" placeholder="Minimum of 4 Charactors" class="form-control" >
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-primary btn-cons m-t-10" type="submit">Update Profile</button>
+            </form>
+        </div>
+        <!-- END PLACE PAGE CONTENT HERE -->
+    </div>
+    <!-- END CONTAINER FLUID -->
+</th:block>
+</html>

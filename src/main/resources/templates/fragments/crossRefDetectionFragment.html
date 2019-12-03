@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml" >
+    <head > 
+        
+    </head>
+    
+    <body class="fixed-header">
+        
+			        <!-- ####################
+			        	     BEGIN CONTENT
+			             #################### -->
+			                       <div id="crossRefResult" th:fragment="dependencies">
+	                 	
+	                 	<h4>Actual requirement</h4>
+	                 	<div class="card">
+	                 	<ul id="actualSimilarity" class="list-group list-group-flush">
+                         <th:block th:each="task, rowStat : ${tasks}">
+                         <span th:if="${#strings.equals(task.id, taskId)}">
+                         <li class="list-group-item" >
+                         	<h6  th:text="${task.title}">Task title</h6>
+                         	<th:block th:if="${task.getPredictions() != null && task.getPredictions().size() > 0}">
+	                         	<span th:if="${task.getPredictions().size()} > 1" style="margin-left: 10px;" >Cross references:</span>
+	                         	<span th:if="${task.getPredictions().size()} == 1" style="margin-left: 10px;" >Cross reference:</span><br>
+	                         	<th:block th:each="prediction, rowStat : ${task.getPredictions()}">
+	                             	<a th:href="@{/apps/{id}/tasks/{taskid} (id=${appId}, taskid=${prediction.id})}" target="_blank">
+	                             		<small style="margin-left: 20px;" th:text="${prediction.title}" >title</small><br>
+	                           		</a>
+	                             </th:block>
+                         	</th:block>
+                         
+                         </li>
+                         </span>
+                     	</th:block>
+ 						</ul>
+	                 	</div>
+	                 	
+	                 	
+	                 	<h4>All requirements</h4>
+	                 	<div class="card">
+                         <ul class="list-group list-group-flush">
+                         <th:block th:each="task, rowStat : ${tasks}">
+                         <li class="list-group-item" th:if="${!#strings.equals(task.id, taskId)}" >
+                         
+                         	<a th:href="@{/apps/{id}/tasks/{taskid} (id=${appId}, taskid=${task.id})}" target="_blank">
+                         		<h6  th:text="${task.title}">Task title</h6>
+                         	</a>
+                         	
+                         	<th:block th:if="${task.getPredictions() != null && task.getPredictions().size() > 0}">
+	                         	<span th:if="${task.getPredictions().size()} > 1" style="margin-left: 10px;" >Cross references:</span>
+	                         	<span th:if="${task.getPredictions().size()} == 1" style="margin-left: 10px;" >Cross reference:</span><br>
+	                         	<th:block th:each="prediction, rowStat : ${task.getPredictions()}">
+	                             	<a th:href="@{/apps/{id}/tasks/{taskid} (id=${appId}, taskid=${prediction.id})}" target="_blank">
+	                             		<small style="margin-left: 20px;" th:text="${prediction.title}" >title</small><br>
+	                           		</a>
+	                             </th:block>
+                         	</th:block>
+                         	
+                             
+                         </li>
+                     </th:block>
+ 						</ul>
+ 						</div>
+                     </div>
+ 					<!-- ####################
+			        	      END CONTENT
+			             #################### -->
+			        
+    </body>
+</html>

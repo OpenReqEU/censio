@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:with="https://www.thymeleaf.org/extras/with"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layouts/basiclayout}"
+      with:title="'Hello, template'">
+
+<th:block layout:fragment="content">
+
+    <script src="/assets/plugins/jquery/jquery-3.2.1.min.js" type="text/javascript"></script>
+<script th:inline="javascript">
+
+//Renders a pie chart
+var drawSparklinePie = function() {
+    $('#sparkline-pie').sparkline([ [[${votingResultView.yesVotes}]],  [[${votingResultView.noVotes}]],  [[${votingResultView.notVoted}]]], {
+        type: 'pie',
+        barWith: '100',
+        barSpacing: '20',
+        width: '200',
+        height: '200',
+        sliceColors: ['#10CFBD', '#F55753', '#626262']
+
+    });
+
+}
+
+$(function () {
+	drawSparklinePie();
+});
+
+</script>
+
+    <!-- START JUMBOTRON -->
+
+
+    <!--<div sec:authorize="hasRole('USER')">Text visible to user.</div>
+    <div sec:authorize="hasAuthority('ADMIN')">Text visible to admin.</div>
+    <div sec:authorize="isAuthenticated()">Text visible only to</div>
+    <div sec:authentication="principal.authorities"></div>
+    <div sec:authentication="name">HIER name</div>-->
+
+
+    <div class="jumbotron" data-pages="parallax">
+        <div class=" container-fluid container-fixed-lg sm-p-l-0 sm-p-r-0">
+            <div class="inner">
+                <!-- START BREADCRUMB -->
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item" style="padding: 13px 20px;">Edemocracy for: <span th:text="${task.title}"></span> </li>
+                </ol>
+
+                <a sec:authorize="hasAuthority('ADMIN')" th:href="@{/apps/create}" class="fa fa-plus btn-primary"
+                   style="position: absolute; top: 15px; right: 20px;  box-shadow: 0px 5px 10px 0px rgba(64, 64, 64, 0.2); font-size: 25px; border-style: solid; height: 50px;width: 50px; vertical-align: middle; padding: 10px; text-align: center;border-radius: 100%"></a>
+                <!-- END BREADCRUMB -->
+            </div>
+        </div>
+    </div>
+            <!-- START CONTAINER FLUID -->
+            <div class=" container-fluid   container-fixed-lg">
+                <div id="rootwizard" class="m-t-50">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs nav-tabs-linetriangle nav-tabs-separator nav-stack-sm" role="tablist" data-init-reponsive-tabs="dropdownfx">
+                        <li class="nav-item">
+                            <a class="active" data-toggle="tab" href="#tab1" data-target="#tab1" role="tab"><i class="fa fa-plus tab-icon"></i> <span>Invite</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="" data-toggle="tab" href="#tab2" data-target="#tab2" role="tab"><i class="fa fa-users tab-icon"></i> <span>Invited Users</span></a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="" data-toggle="tab" href="#tab4" data-target="#tab4" role="tab"><i class="fa fa-bar-chart tab-icon"></i> <span>Statistics</span></a>
+                        </li>
+                        
+                         <li class="nav-item">
+                            <a class="" data-toggle="tab" href="#tab5" data-target="#tab5" role="tab"><i class="fa fa-link tab-icon"></i> <span>Public link</span></a>
+                        </li>
+                    </ul>
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div class="tab-pane padding-20 sm-no-padding active slide-left" id="tab1">
+                            <div class="row row-same-height">
+								<div class="col-md-5">
+									<h3>Participants</h3>
+			
+			                      <div class="input-group mb-3">
+			                          <input id="newEdemocracyUserName" type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2">
+			                          <div class="input-group-append">
+			                              <button class="btn btn-success btn-cons" type="button"
+			                                     th:onclick="'addUserToEdemocracy(\'' + ${addUserUrl} + '\');'">Add</button>
+			                          </div>
+			                      </div>
+			
+			                      <div class="card" >
+									<div th:replace="fragments/edemuserlistfragment :: edemocracyUserlist">
+			                        </div>
+			                      </div>
+			                      <form th:action="@{/apps/{id}/tasks/{taskid}/inviteUser (id=${task.app.id}, taskid=${task.id})}" method="post">
+									<button class="btn btn-success btn-cons" type="submit" >Invite users</button>
+			                                     </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane slide-left padding-20 sm-no-padding" id="tab2">
+                            <div class="row row-same-height">
+                            	<div class="card">
+                                   <ul id="invitedUserlist" class="list-group list-group-flush">
+								        <th:block th:each="user, itemStat : ${addedUsers}">
+								            <li class="list-group-item"><h6
+								                     th:text="${user}">user</h6>
+								                <div class="dropdown" style="position: absolute; width: 50px; top: 10px; right: 0;">
+								                    <a id="card-settings" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false">
+								                        <i class="card-icon card-icon-settings "></i>
+								                    </a>
+								                    <div class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="card-settings">
+								                        <a href="#" class="dropdown-item">Remove User</a>
+								                        <a href="#" class="dropdown-item">Resend Invitation</a>
+								                    </div>
+								                </div>
+								            </li>
+								        </th:block>
+								    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane slide-left padding-20 sm-no-padding" id="tab4">
+                        	<div class="row row-same-height">
+                                <div class="col-md-7">
+                                <ul id="invitedUserlist" class="list-group list-group-flush">
+                                 <li class="list-group-item"><h6>Yes votes received</h6><h6 style="color: #10CFBD;" th:text="${votingResultView.yesVotes}">user</h6></li>
+                                 <li class="list-group-item"><h6>No votes received</h6><h6 style="color: #F55753;" th:text="${votingResultView.noVotes}">user</h6></li>
+                                 <li class="list-group-item"><h6>Not voted yet</h6><h6 style="color: #626262;" th:text="${votingResultView.notVoted}">user</h6></li>
+                                 </ul>
+                                
+                                   <!-- CHART BEGIN -->
+                                   <div id="sparkline-pie" class="sparkline-chart m-t-40" ></div>
+                                    <!-- CHART END -->
+                                </div>
+                            </div>
+                    	</div>
+                    	<div class="tab-pane slide-left padding-20 sm-no-padding" id="tab5">
+                        	<div class="row row-same-height">
+                                <div class="col-md-7">
+                         			<h3>Public Url: </h3>
+                         			<a th:href="${publicUrl}" th:text="${publicUrl}"></a>
+                         			<a th:href="@{'/qrcode/' + ${publicUuid}}" target="_blank">
+                                		<img th:src="@{'/qrcode/' + ${publicUuid}}" width="200" height="200">
+                                	</a>
+                                </div>
+                                
+                            </div>
+                    	</div>
+                        <div class="padding-20 sm-padding-5 sm-m-b-20 sm-m-t-20 bg-white clearfix"> </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- END CONTAINER FLUID -->
+
+</th:block>
+</html>

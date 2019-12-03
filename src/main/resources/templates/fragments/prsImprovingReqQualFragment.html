@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml" >
+    <head > 
+        
+    </head>
+    
+    <body class="fixed-header">
+        
+			        <!-- ####################
+			        	     BEGIN CONTENT
+			             #################### -->
+			                       <div id="improvedReqQualResult" th:fragment="dependencies">
+	                 	
+	                 	<h4>Actual requirement</h4>
+	                 	<div class="card">
+	                 	<ul class="list-group list-group-flush">
+                         <th:block th:each="task, rowStat : ${tasks}">
+                         <span th:if="${#strings.equals(task.id, taskId)}">
+                         <li class="list-group-item" >
+                         	<h6  th:text="${task.title}">Task title</h6>
+                         	<th:block th:if="${task.getImprovements() != null && task.getImprovements().size() > 0}">
+	                         	<span style="margin-left: 10px;" >Description:</span><br>
+	                         	<!--  <small style="margin-left: 20px; -webkit-box-decoration-break: clone; box-decoration-break: clone;"  th:text="${task.description}" >text</small><br> -->
+	                         	<th:block th:each="descriptionPart, rowStat : ${task.getDescriptionParts()}">
+	                             	<span th:if="${rowStat.index} == 0" th:style="'margin-left: 20px;color:' + ${descriptionPart.color}" th:text="${descriptionPart.text}" >text</span>
+	                             	<span th:unless="${rowStat.index} == 0" th:style="'color:' + ${descriptionPart.color}" th:text="${descriptionPart.text}" >text</span>
+	                             </th:block>
+	                         	<br/>
+	                         	<span style="margin-left: 10px;" >Improvement:</span><br>
+	                         	<th:block th:each="improvement, rowStat : ${task.getImprovements()}">
+	                             	<small th:style="'margin-left: 20px; color:' + ${improvement.color}" th:text="${improvement.text}" >text</small> : <small th:text="${improvement.title}" >title</small><br>
+	                             	<small style="margin-left: 35px;" th:text="${improvement.description}" >description</small><br>
+	                             </th:block>
+                         	</th:block>
+                         
+                         </li>
+                         </span>
+                     	</th:block>
+ 						</ul>
+	                 	</div>
+	                 	
+	                 	
+	                 	<h4>All requirements</h4>
+	                 	<div class="card">
+                         <ul class="list-group list-group-flush">
+                         <th:block th:each="task, rowStat : ${tasks}">
+                         <li class="list-group-item" th:if="${!#strings.equals(task.id, taskId)}">
+                         	<a th:href="@{/apps/{id}/tasks/{taskid} (id=${appId}, taskid=${task.id})}" target="_blank">
+                         		<h6  th:text="${task.title}">Task title</h6>
+                         	</a>
+                         	<th:block th:if="${task.getImprovements() != null && task.getImprovements().size() > 0}">
+	                         	<span style="margin-left: 10px;" >Description:</span><br>
+	                         	<!-- <small style="margin-left: 20px; -webkit-box-decoration-break: clone; box-decoration-break: clone;"  th:text="${task.description}" >text</small> -->
+	                         	<th:block th:each="descriptionPart, rowStat : ${task.getDescriptionParts()}">
+	                             	<span th:if="${rowStat.index} == 0" th:style="'margin-left: 20px;color:' + ${descriptionPart.color}" th:text="${descriptionPart.text}" >text</span>
+	                             	<span th:unless="${rowStat.index} == 0" th:style="'color:' + ${descriptionPart.color}" th:text="${descriptionPart.text}" >text</span>
+	                             </th:block>
+	                         	<br/>
+	                         	<span style="margin-left: 10px;" >Improvement:</span><br>
+	                         	<th:block th:each="improvement, rowStat : ${task.getImprovements()}">
+	                             	<small th:style="'margin-left: 20px; color:' + ${improvement.color}" th:text="${improvement.text}" >text</small> : <small th:text="${improvement.title}" >title</small><br>
+	                             	<small style="margin-left: 35px;" th:text="${improvement.description}" >description</small><br>
+	                             </th:block>
+                         	</th:block>
+                         </li>
+                     </th:block>
+ 						</ul>
+ 						</div>
+                     </div>
+ 					<!-- ####################
+			        	      END CONTENT
+			             #################### -->
+			        
+    </body>
+</html>

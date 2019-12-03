@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:with="https://www.thymeleaf.org/extras/with"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layouts/basiclayout}"
+      with:title="'Hello, template'">
+
+<th:block layout:fragment="content">
+    <div class="jumbotron" data-pages="parallax">
+        <div class=" container-fluid container-fixed-lg sm-p-l-0 sm-p-r-0">
+            <div class="inner">
+                <!-- START BREADCRUMB -->
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item" sec:authorize="hasAuthority('ADMIN')" style="padding: 13px 20px;">
+                        Admin
+                    </li>
+                    <li class="breadcrumb-item" sec:authorize="hasAuthority('USER')" style="padding: 13px 5px 13px 20px ;" th:text="${app.getTitle()}">
+                        Participation
+                    </li>
+                    <li class="breadcrumb-item active" sec:authorize="hasAuthority('USER')" style="padding: 13px 0px;" th:text="${app.getTasklabeling().isEmpty()}? 'Requirement':${app.getTasklabeling()}">
+
+                    </li>
+
+
+                    <ul sec:authorize="hasAuthority('ADMIN')" class="nav nav-tabs nav-tabs-simple" role="tablist"
+                        data-init-reponsive-tabs="dropdownfx">
+                        <li class="nav-item">
+                            <a class="active" data-toggle="tab" role="tab" data-target="#tab2hellowWorld" href="#">Basics</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="#" data-toggle="tab" role="tab" data-target="#tab2Inspire">Participants</a>
+                        </li>
+                    </ul>
+                </ol>
+                <!-- END BREADCRUMB -->
+            </div>
+        </div>
+    </div>
+
+    <!-- END JUMBOTRON -->
+    <!-- START CONTAINER FLUID -->
+    <div class="container-fluid container-fixed-lg">
+        <!-- BEGIN PlACE PAGE CONTENT HERE -->
+        <div class="tab-content padding-15">
+            <div class="tab-pane active" id="tab2hellowWorld">
+                <div class="">
+                    <!-- START JUMBOTRON -->
+                    <div class="jumbotron" data-social="cover" data-pages="">
+                        <div class="cover-photo">
+                            <div class="cardimage" th:style="'background: #777; width: 100%; height: 150px; background-image: url(\'/apps/files/' + ${app.imgaeLocation} + '\'); background-size: contain; background-repeat: no-repeat; background-position: center right;'" ></div>
+
+                        </div>
+                        <div class=" container-fluid   container-fixed-lg sm-p-l-0 sm-p-r-0">
+                            <div class="inner">
+                                <div class="pull-bottom bottom-left m-b-40 sm-p-l-15">
+                                    <h1 class="text-white no-margin" th:text="${app.title}">Project Title</h1>
+                                    <h5 class="text-white no-margin" th:text="${app.description}"><span
+                                            class="semi-bold">Description</span></h5>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 th:text="${app.getTasklabeling().isEmpty()}? 'Requirement':${app.getTasklabeling()}"></h3>
+
+                    <div class="card">
+
+                        <ul class="list-group list-group-flush">
+                            <th:block th:each="task, rowStat : ${app.getTaskViewModelSet()}">
+
+
+                                <li class="list-group-item"><a
+                                        th:href="@{/apps/{id}/tasks/{taskid} (id=${app.id}, taskid=${task.id})}"
+                                        style="display: inline-block">
+
+                                    <!--<div class="change-icon" style="display: inline-block">
+                                        <i class="fa fa-bolt border-circle"></i>
+                                        <i class="fa fa-comments border-circle"></i>
+                                    </div>
+
+                                    <i class="fa fa-bolt border-circle"></i>
+                                    <i class="fa fa-comments border-circle"></i>
+                                    <i class="fa fa-users border-circle"></i>-->
+                                   <h6 th:text="${task.title}">Task title</h6></a>
+                                    <div style="display: inline-block; padding: 5px;
+                                            line-height: 10px; float: right;margin-right: 30px;">
+                                        <div style="display: inline-block; padding: 5px;">
+
+                                            <span class="fa fa-thumbs-up"></span>
+                                            <span th:text="${task.nrupvotes}">0</span>
+                                        </div>
+                                        <div style="display: inline-block; padding: 5px;">
+
+                                            <span class="fa fa-thumbs-down"></span>
+                                            <span th:text="${task.nrdownvotes}">0</span>
+                                        </div>
+
+                                        <div style="display: inline-block; padding: 5px;">
+
+                                            <span class="fa fa-users"></span>
+                                            <span th:text="${task.nrvotes}">0</span>
+                                        </div>
+
+                                        <div style="display: inline-block; padding: 5px;">
+
+                                            <span class="fa fa-comment"></span>
+                                            <span th:text="${task.nrcomments}">0</span>
+                                        </div>
+                                        <div class="progress" style="margin-bottom: 0 !important;">
+                                            <div class="progress-bar bg-success" role="progressbar"
+                                                 th:style="'width:'+${task.currentbalanceupvotes}+'%'"></div>
+                                            <div class="progress-bar bg-danger" role="progressbar"
+                                                 th:style="'width:'+${task.currentbalancedownvotes}+'%'"></div>
+                                        </div>
+                                    </div>
+                                    <div class="dropdown" style="
+                                                                             position: absolute;
+                                                                             width: 50px;
+                                                                             top: 10px;
+                                                                             right: 0;">
+                                        <a class="card-settings" data-target="#" href="#"
+                                           data-toggle="dropdown" aria-haspopup="true" role="button"
+                                           aria-expanded="false">
+                                            <i class="card-icon card-icon-settings "></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right" role="menu"
+                                             aria-labelledby="card-settings">
+                                            <a href="admin.html" class="dropdown-item"
+                                               th:href="@{/apps/{appid}/tasks/update (appid=${app.id},id=${task.id})}">Edit</a>
+                                            <a  th:if="${task.isCreator()}" class="dropdown-item"
+                                                th:href="@{/apps/{appid}/tasks/delete (appid=${app.id},id=${task.id})}">Delete</a>
+                                        </div>
+                                    </div>
+
+                                </li>
+                            </th:block>
+
+                        </ul>
+                        <div th:if="${count != null}" class="row" style="margin: auto; padding: .75rem 1.25rem;">
+							
+							<div style="text-align: center;">
+								Showing <b><span th:text="${page} * ${size} == 0 ? 1 : ${page} * ${size}"></span> to <span th:text="(${page} + 1) * ${size} > ${count} ? ${count} : (${page} + 1) * ${size}"></span></b> of <span th:text="${count}"></span> entries<br/>
+								
+								
+								<a th:if="${page} > 0" th:href="@{/apps/{id}?page={newPage}&size=10 (id=${app.id}, newPage=${page} - 1)}" class="pg-arrow_left"></a>
+								<i th:unless="${page} > 0" class="pg-arrow_left"></i>
+								<span th:text="${page} + 1"></span>
+								<a th:if="(${page} + 1) * ${size} < ${count}" th:href="@{/apps/{id}?page={newPage}&size=10 (id=${app.id}, newPage=${page} + 1)}" class="pg-arrow_right"></a>
+								<i th:unless="(${page} + 1) * ${size} < ${count}" class="pg-arrow_right"></i>
+							</div>
+						</div>
+                    </div>
+
+                    <!-- END JUMBOTRON -->
+                </div>
+
+                <a th:href="@{/apps/{id}/tasks/create (id=${app.id})}" class="btn-primary  float">
+                    <i class="fa fa-plus my-float"></i>
+                </a>
+            </div>
+            <div class="tab-pane " id="tab2FollowUs">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="col-lg-4">
+                            <h5>Date
+                                <span class="semi-bold">Range</span>
+                            </h5>
+                            <p>Date range for the participation.
+                            </p>
+                            <br>
+                            <div class="input-daterange input-group" id="datepicker-range">
+                                <input type="text" class="input-sm form-control" name="start"/>
+                                <div class="input-group-addon">to</div>
+                                <input type="text" class="input-sm form-control" name="end"/>
+                            </div>
+                            <br>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                                </div>
+                                <input type="text" name="reservation" id="daterangepicker" class="form-control"
+                                       value="08/01/2013 1:00 PM - 08/01/2013 1:30 PM"/>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="input-group bootstrap-timepicker">
+                                        <input id="timepicker" type="text" class="form-control">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text"><i class="pg-clock"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="tab2Inspire">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="col-lg-4">
+                            <h3>Participants</h3>
+
+
+                            <div class="card">
+
+                                <div id="userlist" >
+                                    <ul class="list-group list-group-flush">
+
+                                        <th:block th:each="user, itemStat : ${app.userViewModelSet}">
+                                            <li class="list-group-item"><h6
+                                                    th:field=" ${app.userViewModelSet[__${itemStat.index}__].email}" th:text="${user.email}">user.email</h6>
+                                        </th:block>
+                                    </ul>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END PLACE PAGE CONTENT HERE -->
+    </div>
+</th:block>
+</html>

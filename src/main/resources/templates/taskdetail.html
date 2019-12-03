@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:with="https://www.thymeleaf.org/extras/with"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layouts/basiclayout}"
+      with:title="'Hello, template'">
+
+<th:block layout:fragment="content">
+
+    <div class="jumbotron" data-pages="parallax">
+        <div class=" container-fluid container-fixed-lg sm-p-l-0 sm-p-r-0">
+            <div class="inner">
+                <!-- START BREADCRUMB -->
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"  sec:authorize="hasAuthority('ADMIN')"  style="padding: 13px 20px;">Admin</li>
+                    <li class="breadcrumb-item" sec:authorize="hasAuthority('USER')" style="padding: 13px 10px 13px 20px ;" th:text="${app.getTitle()}">
+                        Participation
+                    </li>
+
+                    <li class="breadcrumb-item" sec:authorize="hasAuthority('USER')" style="padding: 13px 0px;" >
+                        <a th:href="@{/apps/{id} (id=${app.id})}" th:text="${app.getTasklabeling().isEmpty()}? 'Requirement':${app.getTasklabeling()}"></a>
+
+                    </li>
+                    <li class="breadcrumb-item active" sec:authorize="hasAuthority('USER')" style="padding: 13px 0px 13px 0px ;" th:text="${task.getTitle()}">
+
+                    </li>
+
+                </ol>
+                <!-- END BREADCRUMB -->
+            </div>
+        </div>
+    </div>
+
+    <!-- END JUMBOTRON -->
+    <!-- START CONTAINER FLUID -->
+    <div class="container-fluid container-fixed-lg">
+        <!-- BEGIN PlACE PAGE CONTENT HERE -->
+        <div class="tab-content padding-15">
+            <div class="tab-pane active" id="tab2hellowWorld">
+                <div class="">
+                    <!-- START JUMBOTRON -->
+                    <div class="jumbotron" data-social="cover" data-pages="">
+                        <div class="cover-photo">
+                            <div class="cardimage" th:style="'background: #777; width: 100%; height: 150px; background-image: url(\'/apps/files/' + ${app.imgaeLocation} + '\'); background-size: contain; background-repeat: no-repeat; background-position: center right;'"></div>
+
+                        </div>
+                        <div class=" container-fluid   container-fixed-lg sm-p-l-0 sm-p-r-0">
+                            <div class="inner">
+                                <div class="pull-bottom bottom-left m-b-40 sm-p-l-15">
+                                    <h1 class="text-white no-margin" th:text="${app.title}">Project Title</h1>
+                                    <h5 class="text-white no-margin" th:text="${app.description}"><span
+                                            class="semi-bold">Description</span></h5>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <h3>[[${app.getTasklabeling().isEmpty()}? 'Requirement':${app.getTasklabeling()}]] <a href="participation.html" th:href="@{/apps/{id}?page=0&size=10 (id=${app.id})}"><span
+                            class="fa fa-list"></span></a></h3>
+
+                    <div class="card">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                            	<h6 th:text="${task.title}">Task title</h6>
+
+                                <div th:utext="${task.description}" style="width: 100% ; white-space: pre-wrap">
+                                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget
+                                    dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes,
+                                    nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium
+                                    quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet
+                                    nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae,
+                                    justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus.
+                                    Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula,
+                                    porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in,
+                                    viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet.
+                                    Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitu</div>
+
+                                <th:block
+                                        th:if="${ !task.getTaskAdditionalTypes().isEmpty()} ">
+
+                                    <div style="max-width: 250px; margin-top: 10px" th:each="text, stat : ${app.getTaskAdditionalTypes()}">
+                                        <div class="form-group form-group-default " >
+                                            <label th:text="${text.getTitle()}" style="font-weight: bold"></label>
+                                            <label th:text="${task.taskAdditionalTypes[__${stat.index}__]}"></label>
+                                        </div>
+
+
+                                    </div>
+
+                                </th:block>
+
+                                <!--<div class="center voting-button-group">
+
+                                    <button type="button" th:onclick="'vote('+${task.id}+',\'edemocracy\')'" name="edemocracy"  data-toggle="tooltip" data-placement="bottom" data-html="true"
+                                            class="btn btn-light"
+                                            title="<em>Sample <b><a href='https://www.google.at'>Link<a></b></em>"><span
+                                            class="fa fa-users"></span></button>
+                                    <button type="button" th:onclick="'vote('+${task.id}+',\'upvote\')'"
+                                            name="upvote" class="btn btn-success "><span class="fa fa-thumbs-up"></span>
+                                    </button>
+                                    <button type="button" th:onclick="'vote('+${task.id}+',\'downvote\')'"
+                                            name="downvote" class="btn btn-danger "><span
+                                            class="fa fa-thumbs-down"></span></button>
+
+                                </div>-->
+                                
+	                                <form id="voteForm" th:action="@{/apps/{id}/tasks/{taskid}/vote (id=${app.id}, taskid=${task.id})}" method="post">
+                                     </form>  
+                                      
+                                        <div class="center voting-button-group">
+                                        <!--  
+			                				<button id="edemVoteButton" class="btn btn-light" >
+			                                	<span class="fa fa-users"></span>
+			                                </button>
+			                                -->
+			                                <a th:href="@{/apps/{id}/tasks/{taskid}/edemocracy (id=${app.id}, taskid=${task.id})}" class="btn btn-light" ><span class="fa fa-users"></span></a>
+	                                        <button type="submit" name = "upvote" form="voteForm" class="btn btn-success ">
+	                                            <span class="fa fa-thumbs-up"></span>
+	                                        </button>
+	                                        <button type="submit" name = "downvote" form="voteForm" class="btn btn-danger ">
+	                                        	<span class="fa fa-thumbs-down"></span>
+	                                        </button>
+                                        </div>
+	                               
+                                
+                                <div  th:replace="fragments/votefragments :: votedetails">
+                                </div>
+                                <div style="text-align: right; line-height: 0px;" >
+									<span style="font-size: 8px;" th:text="'Id: ' + ${task.id}"></span>
+                            	</div>
+                            </li>
+
+                        </ul>
+                    </div>
+
+
+                    <!-- END JUMBOTRON -->
+                    <div class="" th:insert="fragments/servicefragment :: servicebasicfunctionality(~{::.nav-item},~{::.service})">
+                        <li class="nav-item" th:replace="fragments/servicefragment :: commentstablink"></li>
+                        <div class="service" th:replace="fragments/servicefragment :: comments"></div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</th:block>
+</html>

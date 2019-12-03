@@ -1,0 +1,45 @@
+<nav class="page-sidebar" data-pages="sidebar"  th:fragment="navigation" xmlns:th="http://www.thymeleaf.org">
+    <!-- BEGIN SIDEBAR MENU TOP TRAY CONTENT-->
+    <div class="sidebar-overlay-slide from-top" id="appMenu">
+
+    </div>
+    <!-- END SIDEBAR MENU TOP TRAY CONTENT-->
+    <!-- BEGIN SIDEBAR MENU HEADER-->
+    <div class="sidebar-header">
+        <img src="/assets/img/logo_censio_white.svg" alt="logo" class="brand" data-src="/assets/img/logo_censio_white.svg"
+             data-src-retina="/assets/img/logo_censio_white.svg" width="78" height="22">
+        <div class="sidebar-header-controls">
+            <button type="button" class="btn btn-xs sidebar-slide-toggle btn-link m-l-20" data-pages-toggle="#appMenu">
+            </button>
+            <button type="button"
+                    class="btn btn-link d-lg-inline-block d-xlg-inline-block d-md-inline-block d-sm-none d-none"
+                    data-toggle-pin="sidebar"><i class="fa fs-12"></i>
+            </button>
+        </div>
+
+    </div>
+    <!-- END SIDEBAR MENU HEADER-->
+    <!-- START SIDEBAR MENU -->
+    <div class="sidebar-menu">
+        <!-- BEGIN SIDEBAR MENU ITEMS-->
+        <ul class="menu-items">
+            <li class="m-t-30">
+                <a th:href="@{/dashboard}" class="detailed">
+                    <span class="title">Dashboard</span>
+                    <span class="details" id="numberofapps">12 New Updates</span>
+                </a>
+                <span class="bg-success icon-thumbnail" th:onclick="'window.location = \'' + @{/dashboard} + '\';'"><i class="pg-home"></i></span>
+            </li>
+            <li>
+                <a th:href="@{/inbox}" class="detailed">
+                    <span class="title">Inbox</span>
+                    <span class="details" id="numberofnotifications">12 New Updates</span>
+                </a>
+                <span class="icon-thumbnail" th:onclick="'window.location = \'' + @{/inbox} + '\';'"><i class="pg-mail"></i></span>
+                <!--  -->
+            </li>
+        </ul>
+        <div class="clearfix"></div>
+    </div>
+    <!-- END SIDEBAR MENU -->
+</nav>

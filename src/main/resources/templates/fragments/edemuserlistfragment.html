@@ -1,0 +1,18 @@
+<div id="edemocracyUserlist" th:fragment="edemocracyUserlist" xmlns:th="http://www.thymeleaf.org" >
+    <ul id="edemUserlist" class="list-group list-group-flush">
+
+        <th:block th:each="user, itemStat : ${users}">
+            <li class="list-group-item"><h6
+                     th:text="${user}">user</h6>
+                <div class="dropdown" style="position: absolute; width: 50px; top: 10px; right: 0;">
+                    <a id="card-settings" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false">
+                        <i class="card-icon card-icon-settings "></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="card-settings">
+                        <a href="#" class="dropdown-item">Remove User</a>
+                    </div>
+                </div>
+            </li>
+        </th:block>
+    </ul>
+</div>

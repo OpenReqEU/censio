@@ -1,0 +1,161 @@
+.profile
+{
+    position: absolute;
+    right: 0;
+}
+
+.header
+{
+    box-shadow: 0px 5px 10px 0px rgba(64, 64, 64, 0.2);
+}
+
+.services a
+{
+    padding: 4px;
+}
+
+.form-buttons-group
+{
+    margin: 5px;
+    text-align: right;
+}
+
+
+.voting-button-group{
+    padding: 10px;
+}
+
+.center
+{
+    text-align: center;
+}
+
+
+.float{
+	position:fixed;
+	width:60px;
+	height:60px;
+	bottom:40px;
+	right:40px;
+	border-radius:50px;
+	text-align:center;
+	box-shadow: 2px 2px 3px #999;
+    z-index: 2000;
+    
+}
+
+.my-float{
+	
+    vertical-align: middle;
+    line-height: 60px;
+    font-size: 30px;
+}
+
+.card .card-header .card-title h4{
+    text-transform: lowercase;
+}
+
+.ajax-loading h1 {
+	color: rgba(0, 0, 0, .3);
+	font-size: 3em;
+	font-family: Impact, fantasy;
+}
+
+.ajax-loading h1:before {
+	content: attr(data-text);
+    position: absolute;
+    overflow: hidden;
+    max-width: 7em;
+    white-space: nowrap;
+    color: black;
+    animation: loading 3s infinite;
+}
+@keyframes loading {
+    0% {
+        max-width: 0;
+    }
+}
+
+.pro-comments{
+    color:#28a745;
+    margin-right: 5px;
+}
+
+.con-comments{
+    color:#a72828;
+    margin-right: 5px;
+}
+
+.neutral-comments{
+    color:#6c757d;
+    margin-right: 5px;
+}
+
+.social-card {
+    width: 100%;
+}
+
+.neutral-comments > i,.pro-comments > i, .con-comments>i {
+    padding-left: 4px;
+}
+
+.border-circle
+{
+    border-radius: 100%;
+    box-shadow: 0px 0px 2px #888;
+    padding: 12px 8px;
+    width: 50px;
+    height: 50px;
+    font-size: x-large;
+    text-align: center;
+    transition: box-shadow 0.5s ease;
+
+}
+
+
+.border-circle:hover
+{
+
+    box-shadow: 0px 0px 10px #6d5cae !important;
+
+}
+
+.previewvotes a, .previewcomments a{
+    color: #ffffff;
+}
+
+.previewvotes a:hover, .previewcomments a:hover{
+    color: #f5f5f5;
+}
+
+
+.change-icon > .fa + .fa,
+.change-icon:hover > .fa {
+    display: none;
+}
+.change-icon:hover > .fa + .fa {
+    display: inherit;
+
+}
+
+
+@keyframes scaleIn {
+    from {
+        transform: scale(.5, .5);
+        opacity: .5;
+    }
+    to {
+        transform: scale(2.5, 2.5);
+        opacity: 0;
+    }
+}
+
+.circle {
+    border-radius: 50%;
+    background-color: deepskyblue;
+    width: 150px;
+    height: 150px;
+    position: absolute;
+    opacity: 0;
+    animation: scaleIn 4s infinite cubic-bezier(.36, .11, .89, .32);
+}
